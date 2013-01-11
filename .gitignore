@@ -1,6 +1,28 @@
-*.class
+.buildpath
+.classpath
+.project
+.settings
+target
 
-# Package Files #
+cache
+
 *.jar
-*.war
-*.ear
+*.toc
+*.out
+*.pdf
+*.aux
+*.log
+*.bbl
+*.blg
+*.dsc
+*.deb
+*.build
+*.changes
+*.gz
+*.substvars
+*.swp
+
+
+## Temporary excludes
+dependency-tree.txt
+
