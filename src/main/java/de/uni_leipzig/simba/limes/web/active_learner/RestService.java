@@ -1,4 +1,4 @@
-package org.linkeddata.qa.dashboard.web;
+package de.uni_leipzig.simba.limes.web.active_learner;
 
 import java.util.ArrayList;
 import java.util.HashMap;

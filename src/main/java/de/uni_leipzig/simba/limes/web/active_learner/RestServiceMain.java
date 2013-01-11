@@ -1,4 +1,4 @@
-package org.linkeddata.qa.dashboard.web;
+package de.uni_leipzig.simba.limes.web.active_learner;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -73,7 +73,7 @@ public class RestServiceMain {
 				"com.sun.jersey.config.property.resourceConfigClass",
 				"com.sun.jersey.api.core.PackagesResourceConfig");
 		sh.setInitParameter("com.sun.jersey.config.property.packages",
-				"org.linkeddata.qa.dashboard.web");
+				"de.uni_leipzig.simba.limes.web.active_learner");
 
 		Server server = new Server(port);
 		Context context = new Context(server, "/", Context.SESSIONS);
