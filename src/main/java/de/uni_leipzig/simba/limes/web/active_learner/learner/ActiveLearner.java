@@ -1,4 +1,4 @@
-package de.uni_leipzig.simba.limes.web.active_learner;
+package de.uni_leipzig.simba.limes.web.active_learner.learner;
  
 import java.util.*; 
 
