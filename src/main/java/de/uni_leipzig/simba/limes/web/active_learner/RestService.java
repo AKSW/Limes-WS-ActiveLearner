@@ -45,7 +45,7 @@ public class RestService {
 	private boolean preserveFittest = true;
 	private int trainingDataSize = 50;
 	private int granularity = 2;
-	private String filename ="";
+	private String filename = System.getProperty("user.home") + "/linkspec.xml";
 
 	
 	/**
@@ -72,7 +72,6 @@ public class RestService {
 		// Reading Limes
 		cr = new ConfigReader();
 		try {
-			filename = System.getProperty("user.home") + "/linkspec.xml";
 			File file = new File(filename);
 			if(file.exists()) {
 				file.delete();
@@ -90,6 +89,7 @@ public class RestService {
 		calculateMapping(cr.getSourceInfo(), cr.getTargetInfo(), cr.metricExpression, cr.acceptanceThreshold, cr.verificationThreshold);
 		Gson gson = new Gson();
 		String tmp = gson.toJson(result.map);
+		System.out.println(tmp);
 		return tmp;
 	}
 
@@ -103,6 +103,8 @@ public class RestService {
 	@Path("/updateMapping")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String updateMapping(@FormParam("updatedMapping") String updatedMapping) {
+		System.out.println("print updated Mapping");
+		System.out.println(updatedMapping);
 		Gson gson = new Gson();
 		HashMap<String, HashMap<String, Double>> map = gson.fromJson(updatedMapping, new HashMap<String, HashMap<String, Double>>().getClass());
 		Mapping newMapping = new Mapping();
