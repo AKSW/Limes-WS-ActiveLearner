@@ -71,7 +71,7 @@ public class RestService {
 	@Path("/getMapping")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getMapping(@FormParam("limesSpec") String limesSpec) {
-		
+		limesSpec = removeQuotes(limesSpec);
 		// Reading Limes
 		cr = new ConfigReader();
 		try {
@@ -133,5 +133,12 @@ public class RestService {
 //		String funcres = al.getMetricActiveLearner(populationSize, generations, mutationRate, preserveFittest, trainingDataSize, granularity, filename, newMapping);
 //		return new Gson().toJson(funcres);
 //	}
+	
+	private String removeQuotes(String s){
+		s = s.substring(1);
+		s = s.substring(0, s.length()-1);
+		s = s.replace("\\\"", "\"");
+		return s;
+	}
 }
 
