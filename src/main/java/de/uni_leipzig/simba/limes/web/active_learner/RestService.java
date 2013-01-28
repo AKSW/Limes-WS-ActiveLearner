@@ -1,7 +1,6 @@
 package de.uni_leipzig.simba.limes.web.active_learner;
 
 import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.HashMap;
@@ -12,8 +11,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-
-import org.xml.sax.InputSource;
 
 
 import com.google.gson.Gson;
@@ -93,8 +90,41 @@ public class RestService {
 		calculateMapping(cr.getSourceInfo(), cr.getTargetInfo(), cr.metricExpression, cr.acceptanceThreshold, cr.verificationThreshold);
 		Gson gson = new Gson();
 		String tmp = gson.toJson(result.map);
-		updateMapping(result.map);
 		return tmp;
+	}
+
+	
+	/**
+	 * Starts the learner by providing a hashmap of the updated Mapping (i.e. the evaluated Mapping) which doesn't contain false links 
+	 * @param updatedMapping HashMap of the evaluated Mapping
+	 * @return new Mapping after learning
+	 */
+	@POST
+	@Path("/updateMapping")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateMapping(@FormParam("updatedMapping") String updatedMapping) {
+		Gson gson = new Gson();
+		HashMap<String, HashMap<String, Double>> map = gson.fromJson(updatedMapping, new HashMap<String, HashMap<String, Double>>().getClass());
+		Mapping newMapping = new Mapping();
+		newMapping.map = map;
+		String[] funcres = al.getCycleMappingActiveLearner(populationSize, generations, mutationRate, preserveFittest, trainingDataSize, granularity, filename, newMapping);
+		String tmp = gson.toJson(funcres);
+		return tmp;
+	}
+	
+//	// Why do we need that? 
+//	public String getMetric(HashMap<String, HashMap<String, Double>> updatedMapping) {
+//		Mapping newMapping = new Mapping();
+//		newMapping.map = updatedMapping;
+//		String funcres = al.getMetricActiveLearner(populationSize, generations, mutationRate, preserveFittest, trainingDataSize, granularity, filename, newMapping);
+//		return new Gson().toJson(funcres);
+//	}
+	
+	private String removeQuotes(String s){
+		s = s.substring(1);
+		s = s.substring(0, s.length()-1);
+		s = s.replace("\\\"", "\"");
+		return s;
 	}
 	
 	/**
@@ -116,37 +146,6 @@ public class RestService {
 		HybridCache tC = HybridCache.getData(new File(System.getProperty("user.home")), targetInfo);
 		SetConstraintsMapper sCM= SetConstraintsMapperFactory.getMapper("simple", sourceInfo, sourceInfo, sC, tC, new LinearFilter(), 2);
 		result = sCM.getLinks(metric, accThreshold);
-	}
-
-
-	
-	/**
-	 * Starts the learner by providing a hashmap of the updated Mapping (i.e. the evaluated Mapping) which doesn't contain false links 
-	 * @param updatedMapping HashMap of the evaluated Mapping
-	 * @return new Mapping after learning
-	 * @author christian
-	 */
-	public String updateMapping(HashMap<String, HashMap<String, Double>> updatedMapping) {		
-		Mapping newMapping = new Mapping();
-		newMapping.map = updatedMapping;
-		String[] funcres = al.getCycleMappingActiveLearner(populationSize, generations, mutationRate, preserveFittest, trainingDataSize, granularity, filename, newMapping);
-		String tmp = new Gson().toJson(funcres);
-		return tmp;
-	}
-	
-	// Why do we need that?
-	public String getMetric(HashMap<String, HashMap<String, Double>> updatedMapping) {
-		Mapping newMapping = new Mapping();
-		newMapping.map = updatedMapping;
-		String funcres = al.getMetricActiveLearner(populationSize, generations, mutationRate, preserveFittest, trainingDataSize, granularity, filename, newMapping);
-		return new Gson().toJson(funcres);
-	}
-	
-	private String removeQuotes(String s){
-		s = s.substring(1);
-		s = s.substring(0, s.length()-1);
-		s = s.replace("\\\"", "\"");
-		return s;
 	}
 }
 
