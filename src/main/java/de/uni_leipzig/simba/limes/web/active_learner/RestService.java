@@ -1,8 +1,11 @@
 package de.uni_leipzig.simba.limes.web.active_learner;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.StringReader;
 import java.util.HashMap;
 import javax.servlet.ServletContext;
 import javax.ws.rs.FormParam;
@@ -11,6 +14,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+
+import org.xml.sax.InputSource;
 
 
 import com.google.gson.Gson;
@@ -54,32 +59,7 @@ public class RestService {
 	public RestService(@Context ServletContext context) {
 		al = new ActiveLearner();
 	}	
-
-	/**
-	 * Relevant part of the LimesWebService project to initiate the calculation of a Link Mapping. It will store the result in the local variable "result".
-	 * @param sourceInfo
-	 * @param targetInfo
-	 * @param metric
-	 * @param accThreshold
-	 * @param revThreshold
-	 * @author christian
-	 */
-	private void calculateMapping (KBInfo sourceInfo, KBInfo targetInfo, String metric,Double accThreshold,Double revThreshold){
-		System.out.println("begin calculation");
-		if(sourceInfo.prefixes == null)
-			sourceInfo.prefixes = new HashMap<String, String>();
-		if(targetInfo.prefixes == null)
-			targetInfo.prefixes = new HashMap<String, String>();
-		
-		HybridCache sC = HybridCache.getData(new File(System.getProperty("user.home")), sourceInfo);
-		System.out.println("continue calculation");
-		HybridCache tC = HybridCache.getData(new File(System.getProperty("user.home")), targetInfo);
-		System.out.println("continue calculation2");
-		SetConstraintsMapper sCM= SetConstraintsMapperFactory.getMapper("simple", sourceInfo, sourceInfo, sC, tC, new LinearFilter(), 2);
-		System.out.println("finish calc");
-		result = sCM.getLinks(metric, accThreshold);
-		System.out.println("finished calculation");
-	}
+	
 	
 	/**
 	 * Gets a Mapping for a link specification provided as content of a Limes XML spec file
@@ -91,41 +71,46 @@ public class RestService {
 	@Path("/getMapping")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getMapping(@FormParam("limesSpec") String limesSpec) {
-		String limesXML = limesSpec;
 		
-		// Reading Limes file
+		// Reading Limes
 		cr = new ConfigReader();
 		try {
-			filename = System.getProperty("user.home") + "/linkspec.xml";
-			
-			File file = new File(filename);
-			if(file.exists()) {
-				file.delete();
-			}
-			try {
-				BufferedWriter schreiber = new BufferedWriter(new FileWriter(filename));
-				schreiber.write(limesXML);
-				schreiber.close();
-			} catch(Exception e) {
-				System.err.println("Error: " + e);
-			}
-			
-			//bad...
-			filename = "/home/hewuri/geolinkingspec.xml";
-			
-			if (!cr.validateAndRead(filename)) {
+			ByteArrayInputStream byteInpStr = new ByteArrayInputStream(limesSpec.getBytes());
+			InputSource is = new InputSource();
+			is.setByteStream(byteInpStr);
+			if (!cr.validateAndRead(is.getByteStream(), filename)) {
 				throw new Exception("Could not successfully validate the Limes Spec XML file!");
-			}
-			
+			}			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		calculateMapping(cr.getSourceInfo(), cr.getTargetInfo(), cr.metricExpression, cr.acceptanceThreshold, cr.verificationThreshold);
 		Gson gson = new Gson();
-		String jss = gson.toJson(result.map);
-		return jss;
+		return gson.toJson(result.map);
 	}
+	
+	/**
+	 * Relevant part of the LimesWebService project to initiate the calculation of a Link Mapping. It will store the result in the local variable "result".
+	 * @param sourceInfo
+	 * @param targetInfo
+	 * @param metric
+	 * @param accThreshold
+	 * @param revThreshold
+	 * @author christian
+	 */
+	private void calculateMapping (KBInfo sourceInfo, KBInfo targetInfo, String metric,Double accThreshold,Double revThreshold){
+		if(sourceInfo.prefixes == null)
+			sourceInfo.prefixes = new HashMap<String, String>();
+		if(targetInfo.prefixes == null)
+			targetInfo.prefixes = new HashMap<String, String>();
+		
+		HybridCache sC = HybridCache.getData(new File(System.getProperty("user.home")), sourceInfo);
+		HybridCache tC = HybridCache.getData(new File(System.getProperty("user.home")), targetInfo);
+		SetConstraintsMapper sCM= SetConstraintsMapperFactory.getMapper("simple", sourceInfo, sourceInfo, sC, tC, new LinearFilter(), 2);
+		result = sCM.getLinks(metric, accThreshold);
+	}
+
 
 	
 	/**
