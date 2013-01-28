@@ -3,19 +3,15 @@ package de.uni_leipzig.simba.limes.web.active_learner;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.servlet.ServletContext;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+
 
 import com.google.gson.Gson;
 
@@ -24,6 +20,7 @@ import de.uni_leipzig.simba.data.Mapping;
 import de.uni_leipzig.simba.filter.LinearFilter;
 import de.uni_leipzig.simba.io.ConfigReader;
 import de.uni_leipzig.simba.io.KBInfo;
+import de.uni_leipzig.simba.limes.web.active_learner.learner.ActiveLearner;
 import de.uni_leipzig.simba.mapper.SetConstraintsMapper;
 import de.uni_leipzig.simba.mapper.SetConstraintsMapperFactory;
 
@@ -35,13 +32,11 @@ import de.uni_leipzig.simba.mapper.SetConstraintsMapperFactory;
  *
  */
 @Path("/service")
-//@Produces("application/rdf+xml")
-//@Produces("text/plain")
 public class RestService {
+	
 	private Mapping result = null;
 	private ActiveLearner al = null;
 	private ConfigReader cr = null;
-	private boolean wasInitialized = false;
 	
 	// Defaults for genetic learner
 	private int populationSize = 20;
@@ -58,47 +53,8 @@ public class RestService {
 	 */
 	public RestService(@Context ServletContext context) {
 		al = new ActiveLearner();
-	}
-	
+	}	
 
-	@POST
-	@Path("/learn-links")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String getDetailData(@FormParam("linkset") String linkset)
-			throws Exception
-	{
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("id", linkset);
-		
-		Gson gson = new Gson();
-		String result = gson.toJson(map);
-		
-		return result;
-	}
-
-	
-	@GET
-	@Path("/projects")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String listProjects()
-			throws Exception
-	{
-		ConfigReader reader = new ConfigReader();
-		// Of course... config reader cannot read from an InputStream - I'll check
-		// if I can add this to the LIMES source
-		//reader.validateAndRead(input, filePath);
-
-		//Map<String, String> map = new HashMap<String, String>();
-		//map.put("projectA", "foo");
-		List<String> projects = new ArrayList<String>();
-		projects.add("dbpedia-linkedgeodata");
-		
-		Gson gson = new Gson();
-		String result = gson.toJson(projects);
-		
-		return result;
-	}
-	
 	/**
 	 * Relevant part of the LimesWebService project to initiate the calculation of a Link Mapping. It will store the result in the local variable "result".
 	 * @param sourceInfo
@@ -116,10 +72,13 @@ public class RestService {
 			targetInfo.prefixes = new HashMap<String, String>();
 		
 		HybridCache sC = HybridCache.getData(new File(System.getProperty("user.home")), sourceInfo);
+		System.out.println("continue calculation");
 		HybridCache tC = HybridCache.getData(new File(System.getProperty("user.home")), targetInfo);
+		System.out.println("continue calculation2");
 		SetConstraintsMapper sCM= SetConstraintsMapperFactory.getMapper("simple", sourceInfo, sourceInfo, sC, tC, new LinearFilter(), 2);
-		
+		System.out.println("finish calc");
 		result = sCM.getLinks(metric, accThreshold);
+		System.out.println("finished calculation");
 	}
 	
 	/**
@@ -128,13 +87,11 @@ public class RestService {
 	 * @return the hashmap of the resulting Mapping
 	 * @author christian
 	 */
-	public String getMapping(String limesSpec) {
-		// Make string valid XML again (in case you use Axis2)
-		String limesXML = null;
-		if (false)
-			limesXML = limesSpec.replace('`', '<');
-		else
-			limesXML = limesSpec;
+	@POST
+	@Path("/getMapping")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMapping(@FormParam("limesSpec") String limesSpec) {
+		String limesXML = limesSpec;
 		
 		// Reading Limes file
 		cr = new ConfigReader();
@@ -153,7 +110,8 @@ public class RestService {
 				System.err.println("Error: " + e);
 			}
 			
-			filename = "/home/christian/GeoLinks/geolinkingspec.xml";
+			//bad...
+			filename = "/home/hewuri/geolinkingspec.xml";
 			
 			if (!cr.validateAndRead(filename)) {
 				throw new Exception("Could not successfully validate the Limes Spec XML file!");
@@ -164,7 +122,9 @@ public class RestService {
 		}
 		
 		calculateMapping(cr.getSourceInfo(), cr.getTargetInfo(), cr.metricExpression, cr.acceptanceThreshold, cr.verificationThreshold);
-		return JsonParser.parseMappingToJSON(result.map);
+		Gson gson = new Gson();
+		String jss = gson.toJson(result.map);
+		return jss;
 	}
 
 	
@@ -181,12 +141,12 @@ public class RestService {
 		return new Gson().toJson(funcres);
 	}
 	
-	// Why do we need that?
-	public String getMetric(HashMap<String, HashMap<String, Double>> updatedMapping) {
-		Mapping newMapping = new Mapping();
-		newMapping.map = updatedMapping;
-		String funcres = al.getMetricActiveLearner(populationSize, generations, mutationRate, preserveFittest, trainingDataSize, granularity, filename, newMapping);
-		return new Gson().toJson(funcres);
-	}
+//	// Why do we need that?
+//	public String getMetric(HashMap<String, HashMap<String, Double>> updatedMapping) {
+//		Mapping newMapping = new Mapping();
+//		newMapping.map = updatedMapping;
+//		String funcres = al.getMetricActiveLearner(populationSize, generations, mutationRate, preserveFittest, trainingDataSize, granularity, filename, newMapping);
+//		return new Gson().toJson(funcres);
+//	}
 }
 
