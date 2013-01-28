@@ -4,8 +4,6 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.StringReader;
 import java.util.HashMap;
 import javax.servlet.ServletContext;
 import javax.ws.rs.FormParam;
@@ -50,7 +48,8 @@ public class RestService {
 	private boolean preserveFittest = true;
 	private int trainingDataSize = 50;
 	private int granularity = 2;
-	private String filename = "";
+	private String filename ="";
+
 	
 	/**
 	 *  Constructor
@@ -72,13 +71,19 @@ public class RestService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getMapping(@FormParam("limesSpec") String limesSpec) {
 		limesSpec = removeQuotes(limesSpec);
+					
 		// Reading Limes
 		cr = new ConfigReader();
 		try {
-			ByteArrayInputStream byteInpStr = new ByteArrayInputStream(limesSpec.getBytes());
-			InputSource is = new InputSource();
-			is.setByteStream(byteInpStr);
-			if (!cr.validateAndRead(is.getByteStream(), filename)) {
+			filename = System.getProperty("user.home") + "/linkspec.xml";
+			File file = new File(filename);
+			if(file.exists()) {
+				file.delete();
+			}
+			BufferedWriter bwriter = new BufferedWriter(new FileWriter(filename));
+			bwriter.write(limesSpec);
+			bwriter.close();
+			if (!cr.validateAndRead(filename)) {
 				throw new Exception("Could not successfully validate the Limes Spec XML file!");
 			}			
 		} catch (Exception e) {
@@ -87,7 +92,9 @@ public class RestService {
 		
 		calculateMapping(cr.getSourceInfo(), cr.getTargetInfo(), cr.metricExpression, cr.acceptanceThreshold, cr.verificationThreshold);
 		Gson gson = new Gson();
-		return gson.toJson(result.map);
+		String tmp = gson.toJson(result.map);
+		updateMapping(result.map);
+		return tmp;
 	}
 	
 	/**
@@ -123,16 +130,17 @@ public class RestService {
 		Mapping newMapping = new Mapping();
 		newMapping.map = updatedMapping;
 		String[] funcres = al.getCycleMappingActiveLearner(populationSize, generations, mutationRate, preserveFittest, trainingDataSize, granularity, filename, newMapping);
-		return new Gson().toJson(funcres);
+		String tmp = new Gson().toJson(funcres);
+		return tmp;
 	}
 	
-//	// Why do we need that?
-//	public String getMetric(HashMap<String, HashMap<String, Double>> updatedMapping) {
-//		Mapping newMapping = new Mapping();
-//		newMapping.map = updatedMapping;
-//		String funcres = al.getMetricActiveLearner(populationSize, generations, mutationRate, preserveFittest, trainingDataSize, granularity, filename, newMapping);
-//		return new Gson().toJson(funcres);
-//	}
+	// Why do we need that?
+	public String getMetric(HashMap<String, HashMap<String, Double>> updatedMapping) {
+		Mapping newMapping = new Mapping();
+		newMapping.map = updatedMapping;
+		String funcres = al.getMetricActiveLearner(populationSize, generations, mutationRate, preserveFittest, trainingDataSize, granularity, filename, newMapping);
+		return new Gson().toJson(funcres);
+	}
 	
 	private String removeQuotes(String s){
 		s = s.substring(1);
