@@ -102,8 +102,6 @@ public class RestService {
 	@Path("/updateMapping")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String updateMapping(@FormParam("updatedMapping") String updatedMapping) {
-		System.out.println("print updated Mapping");
-		System.out.println(updatedMapping);
 		Gson gson = new Gson();
 		HashMap<String, HashMap<String, Double>> map = gson.fromJson(updatedMapping, new HashMap<String, HashMap<String, Double>>().getClass());
 		Mapping newMapping = new Mapping();
@@ -129,6 +127,7 @@ public class RestService {
 		return s;
 	}
 	
+	//needs refactoring
 	private HashMap<String, HashMap<String, Double>> stringarrToHashamp(String[] linkPairs){
 		HashMap<String, HashMap<String, Double>> map = new HashMap<String, HashMap<String, Double>>();
 		for (String linkPair : linkPairs){
