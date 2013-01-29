@@ -1,0 +1,93 @@
+@charset "utf-8";
+/* Stylesheet for link list */
+
+.llentry {
+    width: 100%;
+    border-bottom: 1px solid #000;
+    cursor: pointer;
+}
+.llbggrey {
+    background-image: linear-gradient(left , rgba(0,0,0,0) 0%, rgba(171,171,171,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -o-linear-gradient(left , rgba(0,0,0,0) 0%, rgba(171,171,171,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -moz-linear-gradient(left , rgba(0,0,0,0) 0%, rgba(171,171,171,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -webkit-linear-gradient(left , rgba(0,0,0,0) 0%, rgba(171,171,171,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -ms-linear-gradient(left , rgba(0,0,0,0) 0%, rgba(171,171,171,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(0, rgba(0,0,0,0)), color-stop(0.5, rgba(171,171,171,0.5)), color-stop(1, rgba(0,0,0,0)));
+}
+.llbgyellow {
+    background-image: linear-gradient(left , rgba(0,0,0,0) 0%, rgba(255,255,0,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -o-linear-gradient(left , rgba(0,0,0,0) 0%, rgba(255,255,0,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -moz-linear-gradient(left , rgba(0,0,0,0) 0%, rgba(255,255,0,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -webkit-linear-gradient(left , rgba(0,0,0,0) 0%, rgba(255,255,0,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -ms-linear-gradient(left , rgba(0,0,0,0) 0%, rgba(255,255,0,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(0, rgba(0,0,0,0)), color-stop(0.5, rgba(255,255,0,0.5)), color-stop(1, rgba(0,0,0,0)));
+}
+.llbgred {
+    background-image: linear-gradient(left , rgba(0,0,0,0) 0%, rgba(255,0,0,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -o-linear-gradient(left , rgba(0,0,0,0) 0%, rgba(255,0,0,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -moz-linear-gradient(left , rgba(0,0,0,0) 0%, rgba(255,0,0,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -webkit-linear-gradient(left , rgba(0,0,0,0) 0%, rgba(255,0,0,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -ms-linear-gradient(left , rgba(0,0,0,0) 0%, rgba(255,0,0,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(0, rgba(0,0,0,0)), color-stop(0.5, rgba(255,0,0,0.5)), color-stop(1, rgba(0,0,0,0)));
+}
+.llbggreen {
+    background-image: linear-gradient(left , rgba(0,0,0,0) 0%, rgba(0,255,0,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -o-linear-gradient(left , rgba(0,0,0,0) 0%, rgba(0,255,0,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -moz-linear-gradient(left , rgba(0,0,0,0) 0%, rgba(0,255,0,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -webkit-linear-gradient(left , rgba(0,0,0,0) 0%, rgba(0,255,0,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -ms-linear-gradient(left , rgba(0,0,0,0) 0%, rgba(0,255,0,0.5) 50%, rgba(0,0,0,0) 100%);
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(0, rgba(0,0,0,0)), color-stop(0.5, rgba(0,255,0,0.5)), color-stop(1, rgba(0,0,0,0)));
+}
+.llselected {
+    width: 100%;
+    border-bottom: 1px solid #000;
+    cursor: pointer;
+    background-color: #004;
+}
+.llentry:hover {
+    width: 100%;
+    border-bottom: 1px solid #000;
+    background-color: #00A;
+}
+ 
+.llname {
+    width: 40%;
+    float: left;
+    white-space: nowrap;                                   /* don't wrap text */
+    overflow: hidden;
+}
+
+.llrate {
+    width: 5%;
+    float: left;
+    white-space: nowrap;                                   /* don't wrap text */
+    overflow: hidden;
+    text-align: center;
+    background-repeat:no-repeat;
+    background-position:center top;
+}
+
+.lldistance {
+    width: 15%;
+    float: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: right;
+}
+
+.llgrey {
+    background-image: url("../images/icons/new.png");
+}
+.llyellow {
+    background-image: url("../images/icons/ignored.png");
+}
+.llgreen {
+    background-image: url("../images/icons/accepted.png");
+}
+.llred {
+    background-image: url("../images/icons/declined.png");
+}
+
+.llclear {
+    clear: both;
+}

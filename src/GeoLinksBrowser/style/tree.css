@@ -1,0 +1,61 @@
+@charset "utf-8";
+/* Stylesheet for trees */
+
+/* tree content */
+.treelevel {
+    margin: 0px 0px 0px 7px;                                    /* some space */
+    padding: 0px;                                                  /* padding */
+    white-space: nowrap;                                   /* don't wrap text */
+}
+
+/* tree content */
+.treeEntry {
+    cursor: pointer;                                                /* cursor */
+    display: inline;                                       /* display in line */
+}
+/* tree content hover */
+.treeEntry:hover {
+    background-color: #00F;                               /* background color */
+}
+/* tree content selected */
+.treeEntrySelected {
+    background-color: #00A;                               /* background color */
+}
+
+/* tree buttons */
+.treebutton {
+    cursor: pointer;                                                /* cursor */
+}
+
+/* tree entry image */
+.treeImgEntry {
+    background-image: url("../images/tree/entry.png");
+    background-repeat: no-repeat;
+    float: left;
+    width: 12px;
+    height: 12px;
+    padding: 0px;
+    margin: 0px;
+}
+
+/* tree plus image */
+.treeImgPlus {
+    background-image: url("../images/tree/plus.png");
+    background-repeat: no-repeat;
+    float: left;
+    width: 12px;
+    height: 12px;
+    padding: 0px;
+    margin: 0px;
+}
+
+/* tree minus image */
+.treeImgMinus {
+    background-image: url("../images/tree/minus.png");
+    background-repeat: no-repeat;
+    float: left;
+    width: 12px;
+    height: 12px;
+    padding: 0px;
+    margin: 0px;
+}

@@ -38,7 +38,7 @@ public class RestService {
 	private ActiveLearner al = null;
 	private ConfigReader cr = null;
 	
-	// Defaults for genetic learner
+	// Defaults as in the genetic learner
 	private int populationSize = 20;
 	private int generations = 100;
 	private float mutationRate = 0.5f;
@@ -68,6 +68,7 @@ public class RestService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getMapping(@FormParam("limesSpec") String limesSpec) {
 		limesSpec = removeQuotes(limesSpec);
+		System.out.println("Received Limes Link Specification:\n" + limesSpec);
 					
 		// Reading Limes
 		cr = new ConfigReader();
@@ -85,10 +86,11 @@ public class RestService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		calculateMapping(cr.getSourceInfo(), cr.getTargetInfo(), cr.metricExpression, cr.acceptanceThreshold, cr.verificationThreshold);
 		Gson gson = new Gson();
 		String tmp = gson.toJson(result.map);
-		System.out.println(tmp);
+		System.out.println("Created mapping according to provided link spec:\n" + tmp);
 		return tmp;
 	}
 
@@ -106,19 +108,20 @@ public class RestService {
 		HashMap<String, HashMap<String, Double>> map = gson.fromJson(updatedMapping, new HashMap<String, HashMap<String, Double>>().getClass());
 		Mapping newMapping = new Mapping();
 		newMapping.map = map;
+		System.out.println("Received updated Link Mapping:\n" + map);
 		String[] funcres = al.getCycleMappingActiveLearner(populationSize, generations, mutationRate, preserveFittest, trainingDataSize, granularity, filename, newMapping);
 		String tmp = gson.toJson(stringarrToHashamp(funcres));
 		System.out.println(tmp);
 		return tmp;
 	}
 	
-//	// Why do we need that? 
-//	public String getMetric(HashMap<String, HashMap<String, Double>> updatedMapping) {
-//		Mapping newMapping = new Mapping();
-//		newMapping.map = updatedMapping;
-//		String funcres = al.getMetricActiveLearner(populationSize, generations, mutationRate, preserveFittest, trainingDataSize, granularity, filename, newMapping);
-//		return new Gson().toJson(funcres);
-//	}
+	// CAUTION: For some reason NullPointerException in determineMetric() in GenericLearner (!)
+	public String getMetric(HashMap<String, HashMap<String, Double>> updatedMapping) {
+		Mapping newMapping = new Mapping();
+		newMapping.map = updatedMapping;
+		String funcres = al.getMetricActiveLearner(populationSize, generations, mutationRate, preserveFittest, trainingDataSize, granularity, filename, newMapping);
+		return new Gson().toJson(funcres);
+	}
 	
 	private String removeQuotes(String s){
 		s = s.substring(1);

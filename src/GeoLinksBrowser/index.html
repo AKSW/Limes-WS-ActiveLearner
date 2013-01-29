@@ -1,0 +1,353 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- Index.html - Contains the Linked Geo Data GUI -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <!-- Header -->
+    <head>
+        <!-- Meta data -->
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <title>Linked Geo Data GUI</title>
+        <!-- Stylesheets -->
+        <link rel="stylesheet" href="openlayers-2.11/theme/default/style.css" type="text/css" />
+        <link rel="stylesheet" href="style/style.css" type="text/css" />
+        <link rel="stylesheet" href="style/tree.css" type="text/css" />
+        <link rel="stylesheet" href="style/dropdown.css" type="text/css" />
+        <link rel="stylesheet" href="style/linklist.css" type="text/css" />
+        <!-- Openlayers -->
+        <script type="text/javascript" src="openlayers-2.11/OpenLayers.js"></script>
+        <!-- jQuery -->
+        <script type="text/javascript" src="jquery-1.7.2/jQuery.js"></script>
+        <script type="text/javascript" src="scripts/Ip.js"></script> <!-- get IP -->
+        <script type="text/javascript" src="scripts/sparqlLib.js"></script> <!-- Sparql query libary -->
+        <script type="text/javascript" src="scripts/gui.js"></script> <!-- graphical user interface -->
+        <script type="text/javascript" src="scripts/map.js"></script> <!-- Map -->
+        <script type="text/javascript" src="scripts/tree.js"></script> <!-- Tree view left and right -->
+        <script type="text/javascript" src="scripts/treeEvents.js"></script> <!-- Tree view events -->
+        <script type="text/javascript" src="scripts/dataTree.js"></script> <!-- Getting tree data  -->
+        <script type="text/javascript" src="scripts/dropdown.js"></script> <!-- DropDownMenu -->
+        <script type="text/javascript" src="scripts/user.js"></script> <!-- Userclass -->
+        <script type="text/javascript" src="scripts/userpanel.js"></script> <!-- Userpanel input -->
+        <script type="text/javascript" src="scripts/dataMapPoint.js"></script> <!-- MapPoint -->
+        <script type="text/javascript" src="scripts/langTable.js"></script> <!-- language Table -->
+        <script type="text/javascript" src="scripts/mapPoint.js"></script> <!-- show MapPoint -->
+        <script type="text/javascript" src="scripts/linkList.js"></script> <!-- show LinkList -->
+        <script type="text/javascript" src="scripts/linkPair.js"></script> <!-- linkPair Klasse -->
+        <script type="text/javascript" src="scripts/global.js"></script> <!-- Global functions -->
+        <script type="text/javascript" src="scripts/linking.js"></script> <!-- Create Links -->
+        <script type="text/javascript" src="scripts/createXML.js"></script> <!-- Create XML Spec -->
+    </head>
+    
+    <!-- Body begins here -->
+    <!-- On load execute the init script -->
+    <body onload="init();">
+        <!-- header -->
+        <div id="header">
+            <!-- Cut into [ left | center | right ] -->
+            <table
+                width="99%"
+                border="0"
+                cellspacing="0"
+                cellpadding="0"
+            >
+                <tr>
+                    <!-- Left align -->
+                    <!-- Display login name and search box -->
+                    <td width="25%">
+                        &emsp;
+                        Username:
+                        <div id="seeUsername" style="display:inline">
+                        <input
+                            type="text"
+                            id="usernameText"
+                            name="username"
+                            value=""
+                            onchange=""
+                            onkeydown="if (event.keyCode == 13) document.getElementById('btn_signin').click()"
+                        /></div>
+                        
+                        <!-- sign in button -->
+                        <input
+                            type="button"
+                            class="headbuttons"
+                            id="btn_signin"
+                            tabindex="6"
+                            value="sign in"
+                            onmouseover="gui.tooltip('Sign in with your user account');"
+                            onmouseout="gui.hideTooltip();"
+                            onclick="userpanel.signinclicked();"
+                        />
+                        
+                    </td>
+                    <!-- center align -->
+                    <!-- Display toolbox -->
+                    <td align="center" width="25%">
+                        <div id="toolbox">
+                            <!-- sample tool button -->
+                            <!-- FIXME: Could also be <button><img src="..."></button> -->
+<!-- Commented, because we (still) use the toolbar for the rectangle
+                            <input
+                                type="button"
+                                class="headbuttons"
+                                id="draw_rectangle"
+                                tabindex="5"
+                                value="Choose Area"
+                                onmouseover="gui.tooltip('Choose the area you want to work on.');"
+                                onmouseout="gui.hideTooltip();"
+                            />
+-->                        
+                            <input
+                                type="button"
+                                class="headbuttons"
+                                id="make_link"
+                                tabindex="6"
+                                value="Get Links"
+                                onmouseover="gui.tooltip('Get Links based on the Data.');"
+                                onclick="linking.createLinks();"
+                                onmouseout="gui.hideTooltip();"
+                            />
+                            <input
+                                type="button"
+                                class="headbuttons"
+                                id="update_links"
+                                value="Update Links"
+                                onmouseover="gui.tooltip('Update Links based on your evalutation.');"
+                                onclick="linking.getUpdateLinks();"
+                                onmouseout="gui.hideTooltip();"
+                            />
+                        </div>
+                    </td>
+                  
+                    <!-- right align -->
+                    <!-- non-algorithm-buttons -->
+                    <td width="25%" align="right">                  
+                        <input
+                            type="button"
+                            class="headbuttons"
+                            id="btn_showdb"
+                            tabindex="7"
+                            value="Show saved data"
+                            onmouseover="gui.tooltip('Show all saved data.');"
+                            onmouseout="gui.hideTooltip();"
+                            onclick="window.open('scripts/mysql.php?action=show');"
+                        />                        
+
+		  <!-- No one is saving anything
+
+                        <input
+                            type="button"
+                            class="headbuttons"
+                            id="btn_flush"
+                            tabindex="7"
+                            value="discard"
+                            onmouseover="gui.tooltip('Discard all changes of this session');"
+                            onmouseout="gui.hideTooltip();"
+                        />                        
+
+                        <input
+                            type="button"
+                            class="headbuttons"
+                            id="btn_save"
+                            tabindex="8"
+                            value="save"
+                            onmouseover="gui.tooltip('Save the current session');"
+                            onmouseout="gui.hideTooltip();"
+                        /> 
+
+                        <input
+                            type="button"
+                            class="headbuttons"
+                            id="btn_config"
+                            tabindex="9"
+                            value="configure"
+                            onmouseover="gui.tooltip('Manage your settings');"
+                            onmouseout="gui.hideTooltip();"
+                        />                        
+                         					-->               
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+        <!-- map -->
+        <div id="map">
+        </div>
+        
+        <!-- footer -->
+        <div id="footer">
+            Waiting for JavaScript to change...
+        </div>
+
+        <!-- Display drop down menu -->
+        <!-- Dropdown menu 1 -->
+        <div class="ddspace" id="dropdowncontainer1">
+	        <div class="dropdowncontainer">
+                <input
+                    type="button"
+                    class="headbuttons fixedWidth"
+                    id="btn_dropdown1"
+                    tabindex="10"
+                    value="&#x25BC; Knowledgebase 1"
+                    onmouseover="dropdown.mopen('m1');"
+                    onmouseclick="dropdown.mopen('m1');"
+                    onmouseout="dropdown.mclosetime();"
+                />
+                <!-- Dropdown 1 -->
+                <div id="m1"
+                    class="dropdown" 
+                    onmouseover="dropdown.mcancelclosetime()" 
+                    onmouseout="dropdown.mclosetime()"
+                >
+                    <ul>
+                        <li onclick="dropdown.setDatabase1('http://linkedgeodata.org')">LinkedGeoData</li>
+                        <li onclick="dropdown.setDatabase1('http://dbpedia.org')">DBPedia</li>
+                        <li onkeydown="if (event.keyCode == 13) dropdown.setDatabase1(document.getElementById('customDatabaseText1').value)">
+                            <div id="customDatabse" style="display:inline">
+                            <input
+                                type="text"
+                                id="customDatabaseText1"
+                                name="cDatabse"
+                                value=""
+                                onchange=""
+                            /></div>
+                        </li>
+                    </ul>
+                </div>     
+            </div>
+		</div>
+        <!-- Dropdown menu 2 -->
+        <div class="ddspace" id="dropdowncontainer2">
+            <div class="dropdowncontainer">
+                <input
+                    type="button"
+                    class="headbuttons fixedWidth"
+                    id="btn_dropdown2"
+                    tabindex="10"
+                    value="&#x25BC; Knowledgebase 2"
+                    onmouseover="dropdown.mopen('m2');"
+                    onmouseclick="dropdown.mopen('m2');"
+                    onmouseout="dropdown.mclosetime();"
+                />
+                <!-- Dropdown 2 -->
+                <div id="m2"
+                    class="dropdown" 
+                    onmouseover="dropdown.mcancelclosetime()" 
+                    onmouseout="dropdown.mclosetime()"
+                >
+                    <ul>
+                        <li onclick="dropdown.setDatabase2('http://linkedgeodata.org')">LinkedGeoData</li>
+                        <li onclick="dropdown.setDatabase2('http://dbpedia.org')">DBPedia</li>
+                        <li onkeydown="if (event.keyCode == 13) dropdown.setDatabase2(document.getElementById('customDatabaseText2').value)">
+                            <div id="customDatabse" style="display:inline">
+                            <input
+                                type="text"
+                                id="customDatabaseText2"
+                                name="cDatabse"
+                                value=""
+                                onchange=""
+                            /></div>
+                        </li>
+                    </ul>
+                </div>     
+            </div>
+		</div>
+                
+        <!-- Left tree -->
+        <div id="leftmenu">
+            <div id="tree1" class="panel">
+                Select Database from above
+            </div>
+    		<!-- Left tree loading image -->
+            <div id="treeloading1" class="hidden">
+            	<img src="images/connecting.gif" />
+            </div>
+		</div>
+        
+        <!-- Right tree -->
+        <div id="rightmenu">
+            <div id="tree2" class="panel">
+                Select Database from above
+            </div>
+			<div id="treeloading2" class="hidden">
+    	    	<img src="images/connecting.gif" />
+	        </div>
+        </div>
+		<!-- Right tree loading image -->
+        
+        
+        
+        <!-- link list -->
+        <div id="linklist" class="panel">
+            Link list
+        </div>
+        
+        <!-- button panel -->
+	    <div id="buttons" class="panel">
+            <input
+                type="button"
+                class="buttons"
+                id="btn_resolveurl"
+                tabindex="1"
+                value="resolve url"
+                onmouseover="gui.tooltip('Show information');"
+                onclick="if(linklist.selected != -1) linklist.linkArray[linklist.selected].resolveUrl();"
+                onmouseout="gui.hideTooltip();"
+            />
+
+            <!-- help button -->
+            <!--<input
+                type="button"
+                class="buttons"
+                id="btn_help"
+                tabindex="2"
+                value="help"
+                onmouseover="gui.tooltip('Show help');"
+                onmouseout="gui.hideTooltip();"
+            />-->
+
+            <!-- accept link button -->
+            <!--        // by clicking the 'Accept' Button, the selected Linkset with username and rating (accept) 
+                        // initiates the setRating() function in LinkPair. -->
+            <input
+                type="button"
+                class="buttons"
+                id="btn_acceptlink"
+                tabindex="3"
+                value="accept link"
+                onclick="if(linklist.selected != -1) linklist.linkArray[linklist.selected].setRating(3,userpanel.user.getName());"
+                onmouseover="gui.tooltip('Confirm selected link');"
+                onmouseout="gui.hideTooltip();"
+            />
+
+            <!-- ignore link button -->
+            <input
+                type="button"
+                class="buttons"
+                id="btn_ignorelink"
+                tabindex="4"
+                value="ignore link"
+		onclick="if(linklist.selected != -1) linklist.linkArray[linklist.selected].setRating(1,userpanel.user.getName());"
+                onmouseover="gui.tooltip('Ignore selected link');"
+                onmouseout="gui.hideTooltip();"
+            />
+
+            <!-- reject link button -->
+            <input
+                type="button"
+                class="buttons"
+                id="btn_rejectlink"
+                tabindex="5"
+                value="reject link"
+		onclick="if(linklist.selected != -1) linklist.linkArray[linklist.selected].setRating(2,userpanel.user.getName());"
+                onmouseover="gui.tooltip('Reject selected link');"
+                onmouseout="gui.hideTooltip();"
+            />
+        </div>
+        
+        <!-- hidden message box -->
+        <div id="messagebox" class="hidden" onclick="gui.hideMessageBox()">
+            Unkown Error
+        </div>
+    </body>
+</html>

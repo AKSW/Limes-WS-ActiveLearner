@@ -1,0 +1,304 @@
+@charset "utf-8";
+/* Stylesheet for index.html */
+
+/* Modify body and html tag */
+html,body {
+    margin: 0px;                                                 /* no margin */
+    padding: 0px;                                               /* no padding */
+    height: 100%;                                              /* full height */
+    width: 100%;                                                /* full width */
+    overflow: hidden;                                        /* hide overflow */
+    font-family: Verdana, Geneva, sans-serif;                  /* change font */
+    font-size: 12px;                                       /* change font size*/
+}
+
+/* Headmenu */
+#header {
+    background-color: #CCC;                               /* background: gray */
+    background-color: rgba(200,200,200,0.9);                  /* transparency */
+    height: 20px;                                                   /* height */
+    width: 100%;                                                /* full width */
+    position: absolute;                                            /* overlay */
+    top: 0px;                                                     /* position */
+    left: 0px;
+    -moz-box-shadow: 0px 1px 5px #000;                       /* fancy effects */
+    -webkit-box-shadow: 0px 1px 5px #000;
+    -o-box-shadow: 0px 1px 5px #000;
+    box-shadow: 0px 1px 5px #000;
+    z-index: 1001;                                            /* draw over map*/
+    padding: 6px 0px 6px 0px;                                   /* some space */
+    text-indent: 15px;                                              /* indent */
+    white-space: nowrap;                                   /* don't wrap text */
+}
+
+/* Login name */
+#loginname {
+    display: inline;                                                /* inline */
+}
+
+/* toolbox */
+#toolbox {
+    display: inline;                                                /* inline */
+}
+
+/* map */
+#map {
+    background-color: #009;       /* background color to be replaced with map */
+    width: 100%;                                                /* full width */
+    min-height: 100%;                                           /* min-height */
+    height:100%;                                                    /* height */
+    overflow: hidden !important;                         /* remove scroll bar */ 
+    text-align: center;                                             /* center */
+    position: absolute;                                           /* position */
+    top: 0px;
+    left: 0px;
+}
+
+/* Footmenu */
+#footer {
+    background-color: #CCC;                               /* background: gray */
+    background-color: rgba(200,200,200,0.9);                  /* transparency */
+    height: 20px;                                                   /* height */
+    width: 100%;                                                /* full width */
+    position: absolute;                                            /* overlay */
+    bottom: 0px;                                           /* stick to bottom */
+    left: 0px;
+    -moz-box-shadow: 0px -1px 5px #000;                      /* fancy effects */
+    -webkit-box-shadow: 0px -1px 5px #000;
+    -o-box-shadow: 0px -1px 5px #000;
+    box-shadow: 0px -1px 5px #000;
+    z-index: 1001;                                           /* draw over map */
+    padding: 6px 0px 6px 0px;                                   /* some space */
+    text-indent: 15px;                                              /* indent */
+    white-space: nowrap;                                   /* don't wrap text */
+}
+
+/* Panels */
+.panel {
+    background-color: #333;                    /* background-color - obsolete */
+    background-color: rgba(0, 0, 0, 0.5);                 /* background-color */
+    z-index: 1000;                                           /* draw over map */
+    color: #FFF;                                                /* white text */
+    -webkit-border-radius: 10px;                             /* border radius */
+    -o-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;    
+}
+
+.panelblur {
+    background-color: #333;                    /* background-color - obsolete */
+    background-color: rgba(0, 0, 0, 0.5);                 /* background-color */
+    z-index: 1000;                                           /* draw over map */
+    color: #888;                                                 /* grey text */
+    text-shadow: 0 0 1px rgba(255,255,255, .5);    
+    -webkit-border-radius: 10px;                             /* border radius */
+    -o-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;    
+}
+
+/* tree panels */
+#tree1 {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+}
+#tree2 {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+}
+
+/* new menus */
+#leftmenu {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	position: relative;
+    width: 15%;                                                      /* width */
+    height: 100%;                                                   /* height */
+	padding: 70px 5px 40px 5px;
+	overflow: hidden;
+	display: block; 
+}
+#rightmenu {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	position: relative;
+    width: 15%;                                                      /* width */
+    height: 100%;                                                   /* height */
+	padding: 70px 5px 40px 5px;
+	overflow: hidden;
+	display: block;
+	left: 85%;
+	top: -100%;
+}
+
+/* tree loading panels */
+#treeloading1 {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	position: relative;
+	width: 100%;                                                     /* width */
+	overflow: hidden;
+	text-align: center;
+	left: 0px;
+	top: -55%;
+	padding: 5px;
+	z-index: 3000;
+	background: rgba(0,64,64,0.9);
+}
+#treeloading2 {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	position: relative;
+    width: 100%;                                                     /* width */
+	overflow: hidden;
+    text-align: center;
+    left: 0px;
+    top: -55%;
+	padding: 5px;
+    z-index: 3000;
+    background: rgba(0,64,64,0.9);
+}
+
+
+/* link list panel */
+#linklist {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    padding: 5px;                                                  /* padding */
+    width: 47%;                                                      /* width */
+    height: 20%;                                                    /* height */
+    position: absolute;                                           /* position */
+    left: 16%; 
+    bottom: 40px; 
+    overflow: auto;
+}
+
+/* link list panel */
+#buttons {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    padding: 5px;                                                  /* padding */
+    width: 20%;                                                      /* width */
+    height: 20%;                                                    /* height */
+    position: absolute;                                           /* position */
+    right: 16%;                                                  /* postition */
+    bottom: 40px; 
+}
+
+/* message box */
+#messagebox {
+    background-color: rgba(190,192,198,0.9);              /* background color */
+    z-index: 2000;                                  /* in front of everything */
+    position: absolute;                                           /* position */
+    top: 40%;
+    left: 40%;
+    width: 20%;
+    height: auto;                                                   /* height */
+    text-align: center;                                             /* center */
+    font-weight: bold;                                                /* font */
+    font-size: 12pt;
+    padding: 5px;                                                    /* margin */
+    -moz-box-shadow: 0px 0px 15px #000;                      /* fancy effects */
+    -webkit-box-shadow: 0px 0px 15px #000;
+    -o-box-shadow: 0px 0px 15px #000;
+    box-shadow: 0px 0px 15px #000;    
+    -webkit-border-radius: 10px;                             /* border radius */
+    -o-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    overflow: hidden;                                        /* hide overflow */
+}
+
+.messageboxHeader {
+    width: 100%;
+    height: auto;
+    background-color: #800;
+    position: relative;
+    padding: 5px;
+    top: -5px;
+    left: -5px;
+    color: #aa9;
+}
+
+.messageboxContent {
+    text-align: left;
+    font-size: 11pt;
+    font-weight: normal;
+}    
+
+/* hidden class */
+.hidden {
+    visibility: hidden;                                            /* hide it */
+}
+
+/* visible class */
+.visible {
+    visibility: visible;                                           /* show it */
+}
+
+/* buttons */
+.buttons {
+    width: 100%;                                                     /* width */
+    height: 25%;                                                    /* height */
+    padding: 0px;                                                  /* padding */
+    font-size: 11px;                                                  /* font */
+    font-weight: bold;
+    cursor: pointer;                                         /* change cursor */
+}
+
+/* head menu buttons */
+.headbuttons {
+    width: auto;                                                     /* width */
+    height: 24px;                                                   /* height */
+    padding: 0px;                                                  /* padding */
+    font-size: 11px;                                                  /* font */
+    font-weight: bold;
+    cursor: pointer;                                                /* cursor */
+    background: #EEE;                                     /* background color */
+    color: #333;                                                /* text color */
+    border: 1px solid #333;                                         /* border */
+    -webkit-border-radius: 3px;                              /* border radius */
+    -o-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    text-align: center;                                         /* text align */
+    text-decoration: none;                                   /* no decoration */
+}
+
+/* fix width to 100% */
+.fixedWidth {
+    width: 100%;
+}
+
+.headbuttons:hover {
+    background: #DDD;                                     /* background color */
+}
+
+/* Overwrite open layers default settings */
+/* NavTools */
+.olControlPanZoom {
+    top: 40px !important;                                         /* position */
+    left: 17% !important;
+}
+
+.olControlNavToolbar {
+    left: 16.5%;                                                  /* position */
+    top: 40%;
+    visibility: hidden;                 /* FIXME: ENABLE FOR RECTANGLE CHOSSE */
+}

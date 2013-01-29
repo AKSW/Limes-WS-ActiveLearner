@@ -1,0 +1,100 @@
+@charset "utf-8";
+/* Simple Drop Down Menu */
+.ddm
+{
+    background-image: url("http://www.openlayers.org/dev/img/marker.png");
+    background-repeat: no-repeat;
+    text-indent: 20px;
+}
+
+.ddm-blue
+{
+    background-image: url("http://www.openlayers.org/dev/img/marker-blue.png");
+    background-repeat: no-repeat;
+    text-indent: 20px;
+}
+
+.ddm-green
+{
+    background-image: url("http://www.openlayers.org/dev/img/marker-green.png");
+    background-repeat: no-repeat;
+    text-indent: 20px;
+}
+
+.ddspace
+{
+	position: absolute;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	top: 30px;
+    width: 15%;                                                      /* width */
+    height: 40px;                                                   /* height */
+	padding: 5px 5px 5px 5px;
+	display: block;	
+}
+
+#dropdowncontainer1
+{
+    left: 0px;
+}
+
+#dropdowncontainer2
+{
+    right: 0px;
+}
+
+.dropdowncontainer
+{
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	position: relative;
+    width: 100%;                                                      /* width */
+    height: 30px;                                                   /* height */
+    text-align: left;
+    background-color: #333;                    /* background-color - obsolete */
+    background-color: rgba(0, 0, 0, 0.5);                 /* background-color */
+    z-index: 2500;                                           /* draw over map */
+    -webkit-border-radius: 10px;                             /* border radius */
+    -o-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;     
+	padding: 3px;
+}
+
+.dropdown
+{
+    position: absolute;
+    visibility: hidden;
+    margin: 0;
+    padding: 0;
+    background: #EEE;
+    border: 1px solid #333;
+}
+.dropdown ul
+{
+    text-indent: 0px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.dropdown li
+{
+    width: auto;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    list-style: none;
+    display: block;
+    margin: 0;
+    padding: 4px 10px;
+    text-align: left;
+    text-decoration: none;
+}
+.dropdown li:hover
+{
+    background-color: #DDD;
+}
