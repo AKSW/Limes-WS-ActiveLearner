@@ -85,7 +85,6 @@ public class RestService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		calculateMapping(cr.getSourceInfo(), cr.getTargetInfo(), cr.metricExpression, cr.acceptanceThreshold, cr.verificationThreshold);
 		Gson gson = new Gson();
 		String tmp = gson.toJson(result.map);
@@ -110,7 +109,8 @@ public class RestService {
 		Mapping newMapping = new Mapping();
 		newMapping.map = map;
 		String[] funcres = al.getCycleMappingActiveLearner(populationSize, generations, mutationRate, preserveFittest, trainingDataSize, granularity, filename, newMapping);
-		String tmp = gson.toJson(funcres);
+		String tmp = gson.toJson(stringarrToHashamp(funcres));
+		System.out.println(tmp);
 		return tmp;
 	}
 	
@@ -127,6 +127,17 @@ public class RestService {
 		s = s.substring(0, s.length()-1);
 		s = s.replace("\\\"", "\"");
 		return s;
+	}
+	
+	private HashMap<String, HashMap<String, Double>> stringarrToHashamp(String[] linkPairs){
+		HashMap<String, HashMap<String, Double>> map = new HashMap<String, HashMap<String, Double>>();
+		for (String linkPair : linkPairs){
+			String[] arr = linkPair.split("http");
+			HashMap<String, Double> m = new HashMap<String, Double>();
+			m.put("http"+arr[2], 0.9);
+			map.put("http"+arr[1], m);			
+		}
+		return map;
 	}
 	
 	/**
